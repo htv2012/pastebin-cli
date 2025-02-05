@@ -1,0 +1,17 @@
+meta {
+  name: usersdetails
+  type: http
+  seq: 3
+}
+
+post {
+  url: https://pastebin.com/api/api_post.php
+  body: multipartForm
+  auth: none
+}
+
+body:multipart-form {
+  api_dev_key: 0f5ebdccdc20288d8946008d7bc6fb74
+  api_user_key: 6a314872d831cdcc4d1481202c0666ec
+  api_option: userdetails
+}

@@ -1,0 +1,26 @@
+[project]
+name = "pastebin_cli"
+version = "1.0.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "Hai Vu", email = "haivu2004@gmail.com" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "click>=8.1.8",
+    "requests>=2.32.3",
+    "rich>=13.9.4",
+]
+
+[project.scripts]
+pastebin-cli = "pastebin_cli.main:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[dependency-groups]
+dev = [
+    "jupyterlab>=4.3.5",
+]
