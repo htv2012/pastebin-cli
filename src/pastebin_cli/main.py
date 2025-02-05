@@ -3,13 +3,17 @@ import types
 import click
 
 from . import config
-from .display import display_json, display_paste
+from .display import display_json, display_paste, display_text
 from .pastebin_api import PastebinAPI, parse_paste_list
 
 
 @click.group()
 @click.pass_context
 def main(ctx: click.Context):
+    """Access the pastebin.com data.
+    
+    Configuration file is at ~/.config/pastebin.toml
+    """
     ctx.ensure_object(types.SimpleNamespace)
 
     try:
@@ -28,6 +32,7 @@ def main(ctx: click.Context):
 @click.pass_context
 @click.option("-j", "--json-output", is_flag=True)
 def ls(ctx: click.Context, json_output: bool):
+    """List my pastes"""
     resp = ctx.obj.api.ls()
     if not resp.ok:
         click.echo(f"{resp.status_code} {resp.reason}", err=True)
@@ -40,3 +45,17 @@ def ls(ctx: click.Context, json_output: bool):
     else:
         for paste in pastes:
             display_paste(paste)
+
+
+@main.command()
+@click.pass_context
+@click.argument("key")
+def get(ctx: click.Context, key: str):
+    """Get the raw content of a paste"""
+    resp = ctx.obj.api.get(key)
+    if not resp.ok:
+        click.echo(f"{resp.status_code} {resp.reason}", err=True)
+        click.echo(resp.text)
+        ctx.exit(1)
+
+    display_text(resp.text)
