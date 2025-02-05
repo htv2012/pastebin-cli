@@ -11,7 +11,7 @@ from .pastebin_api import PastebinAPI, parse_paste_list
 @click.pass_context
 def main(ctx: click.Context):
     """Access the pastebin.com data.
-    
+
     Configuration file is at ~/.config/pastebin.toml
     """
     ctx.ensure_object(types.SimpleNamespace)

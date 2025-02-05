@@ -50,6 +50,5 @@ def display_json(data: dict):
 
 def display_text(text: str):
     """Display text, with syntax highlighting when possible"""
-    # console = _get_console()
-    console = rich.console.Console()
+    console = _get_console()
     console.print(text)
