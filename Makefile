@@ -11,7 +11,7 @@ lint:
 
 ### Run the project
 run: lint
-	uv run pbcli
+	uv run pastebin-cli
 
 ### Run unit tests
 test: lint

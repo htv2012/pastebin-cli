@@ -1,5 +1,5 @@
 [project]
-name = "pbcli"
+name = "pastebin_cli"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
@@ -14,8 +14,13 @@ dependencies = [
 ]
 
 [project.scripts]
-pbcli = "pbcli:main"
+pastebin-cli = "pastebin_cli.main:main"
 
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
+
+[dependency-groups]
+dev = [
+    "jupyterlab>=4.3.5",
+]
