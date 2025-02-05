@@ -12,6 +12,7 @@ lint:
 ### Run the project
 run: lint
 	uv run pastebin-cli ls
+	uv run pastebin-cli get DM8weHEd
 
 ### Run unit tests
 test: lint

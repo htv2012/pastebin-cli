@@ -43,6 +43,7 @@ class PastebinAPI:
     def __init__(self, api_dev_key: str, api_user_key: str):
         self.api_dev_key = api_dev_key
         self.api_user_key = api_user_key
+        self.url = "https://pastebin.com/api/api_post.php"
         self.session = requests.Session()
 
     def ls(self, api_results_limit: int = None) -> requests.Response:
@@ -54,5 +55,15 @@ class PastebinAPI:
         if api_results_limit is not None:
             payload["api_results_limit"] = api_results_limit
 
-        resp = self.session.post("https://pastebin.com/api/api_raw.php", data=payload)
+        resp = self.session.post(self.url, data=payload)
+        return resp
+
+    def get(self, api_paste_key: str) -> requests.Response:
+        payload = {
+            "api_dev_key": self.api_dev_key,
+            "api_user_key": self.api_user_key,
+            "api_option": "show_paste",
+            "api_paste_key": api_paste_key,
+        }
+        resp = self.session.post(self.url, data=payload)
         return resp
