@@ -31,6 +31,6 @@ def display_paste(paste: dict):
     console.print()
 
 
-def show_json(data: dict):
+def display_json(data: dict):
     console = _get_console()
     console.print(rich.json.JSON.from_data(data, indent=2))
