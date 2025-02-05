@@ -1,7 +1,7 @@
 meta {
-  name: list
+  name: show_paste
   type: http
-  seq: 2
+  seq: 4
 }
 
 post {
@@ -10,13 +10,9 @@ post {
   auth: none
 }
 
-params:query {
-  ~api_dev_key: 0f5ebdccdc20288d8946008d7bc6fb74
-  ~api_user_key: 6a314872d831cdcc4d1481202c0666ec
-}
-
 body:multipart-form {
   api_dev_key: 0f5ebdccdc20288d8946008d7bc6fb74
-  api_option: list
   api_user_key: 6a314872d831cdcc4d1481202c0666ec
+  api_option: show_paste
+  api_paste_key: K80ccFZv
 }

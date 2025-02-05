@@ -1,7 +1,7 @@
 meta {
-  name: usersdetails
+  name: list
   type: http
-  seq: 3
+  seq: 2
 }
 
 post {
@@ -10,8 +10,13 @@ post {
   auth: none
 }
 
+params:query {
+  ~api_dev_key: 0f5ebdccdc20288d8946008d7bc6fb74
+  ~api_user_key: 6a314872d831cdcc4d1481202c0666ec
+}
+
 body:multipart-form {
   api_dev_key: 0f5ebdccdc20288d8946008d7bc6fb74
-  api_option: userdetails
   api_user_key: 6a314872d831cdcc4d1481202c0666ec
+  api_option: list
 }

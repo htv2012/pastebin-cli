@@ -3,16 +3,15 @@ import xml.etree.ElementTree as ET
 import requests
 
 
-def parse_paste(node):
+def parse_paste(node: ET.Element):
     """
     Parses a single paste given an XML node
     """
     record = {attr.tag: attr.text for attr in node}
     return record
-    # attributes["paste_date"] = time.localtime(int(attributes["paste_date"]))
 
 
-def parse_paste_list(xml_text):
+def parse_paste_list(xml_text: str):
     """
     Parses a list of pastes in XML format
 
