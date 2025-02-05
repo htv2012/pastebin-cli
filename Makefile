@@ -11,7 +11,7 @@ lint:
 
 ### Run the project
 run: lint
-	uv run pastebin-cli
+	uv run pastebin-cli ls
 
 ### Run unit tests
 test: lint
@@ -25,3 +25,8 @@ clean:
 ### Install this tool locally
 install:
 	uv tool install --upgrade .
+
+### Start the notebook server
+notebook:
+	uv run jupyter lab --notebook-dir=pastebin-api
+
