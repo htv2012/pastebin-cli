@@ -2,15 +2,28 @@ import pathlib
 
 import tomllib
 
+EMPTY_CONFIG = """
+api_dev_key = ""
+api_user_key = ""
+"""
+
+
+class ConfigError(BaseException):
+    pass
+
 
 def load():
     """Retrieves the configurations from a file"""
     config_filename = pathlib.Path("~/.config/pastebin.toml").expanduser()
     if not config_filename.exists():
-        # TODO: Create the config file and ask the user to fill in
-        raise SystemExit(f"Cannot find configuration file {config_filename}")
+        with open(config_filename, "w") as stream:
+            stream.write(EMPTY_CONFIG)
+            raise ConfigError(f"Please add keys to {config_filename}")
 
     with open(config_filename, "rb") as stream:
         config = tomllib.load(stream)
+
+    if config["api_dev_key"] == "" or config["api_user_key"] == "":
+        raise ConfigError(f"One or more keys are empty. Please edit {config_filename}")
 
     return config

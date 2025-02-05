@@ -14,7 +14,12 @@ def main(ctx: click.Context, json_output: bool):
     ctx.ensure_object(types.SimpleNamespace)
     ctx.json_output = json_output
 
-    settings = config.load()
+    try:
+        settings = config.load()
+    except config.ConfigError as error:
+        click.echo(error, err=True)
+        ctx.exit(1)
+
     ctx.obj.api = PastebinAPI(
         api_dev_key=settings["api_dev_key"],
         api_user_key=settings["api_user_key"],
@@ -25,7 +30,10 @@ def main(ctx: click.Context, json_output: bool):
 @click.pass_context
 def ls(ctx: click.Context):
     resp = ctx.obj.api.ls()
-    resp.raise_for_status()
+    if not resp.ok:
+        click.echo(f"{resp.status_code} {resp.reason}", err=True)
+        click.echo(resp.text)
+        ctx.exit(1)
 
     pastes = parse_paste_list(resp.text)
     for paste in pastes:
