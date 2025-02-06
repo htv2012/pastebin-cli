@@ -84,7 +84,14 @@ def get(ctx: click.Context, key: str):
 @click.option("-f", "--folder", help="Folder key")
 @click.pass_context
 def put(ctx: click.Context, filename, name, syntax, privacy, expiry, folder):
-    """Create a new paste"""
+    """
+    Create a new paste
+
+    If FILENAME is -, stdin will be used
+
+    If FILENAME is omitted, and editor will be launched to allow
+    adding content
+    """
     content = filelib.get_content(filename)
     if content is None:
         click.echo("Paste will not be created as there is no content.", err=True)
