@@ -67,3 +67,27 @@ class PastebinAPI:
         }
         resp = self.session.post(self.url, data=payload)
         return resp
+
+    def put(
+        self,
+        content: str,
+        name: str = None,
+        syntax: str = None,
+        privacy: int = 2,
+        expiry: str = None,
+        folder: str = None,
+    ):
+        """Create a new paste"""
+        payload = {
+            "api_dev_key": self.api_dev_key,
+            "api_user_key": self.api_user_key,
+            "api_option": "paste",
+            "api_paste_code": content,
+            "api_paste_name": name,
+            "api_paste_format": syntax,
+            "api_paste_private": privacy,
+            "api_paste_expire_date": expiry,
+            "api_folder_key": folder,
+        }
+        resp = self.session.post(self.url, data=payload)
+        return resp
