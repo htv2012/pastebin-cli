@@ -67,7 +67,7 @@ def get(ctx: click.Context, key: str):
 @click.option("-n", "--name")
 @click.option("-f", "--fmt")
 @click.option("-s", "--scope")
-@click.option("-e", "--expiry")
+@click.option("-e", "--expiry", type=str.upper)
 @click.option("-F", "--folder")
 @click.pass_context
 def put(ctx: click.Context, content, name, fmt, scope, expiry, folder):
