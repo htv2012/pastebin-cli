@@ -9,6 +9,7 @@ from .pastebin_api import PastebinAPI, parse_paste_list
 
 @click.group()
 @click.pass_context
+@click.version_option()
 def main(ctx: click.Context):
     """Access the pastebin.com data.
 
@@ -59,3 +60,26 @@ def get(ctx: click.Context, key: str):
         ctx.exit(1)
 
     display_text(resp.text)
+
+
+@main.command()
+@click.option("-c", "--content", required=True, prompt=True)
+@click.option("-n", "--name")
+@click.option("-f", "--fmt")
+@click.option("-s", "--scope")
+@click.option("-e", "--expiry")
+@click.option("-F", "--folder")
+@click.pass_context
+def put(ctx: click.Context, content, name, fmt, scope, expiry, folder):
+    """Create a new paste"""
+    resp = ctx.obj.api.put(
+        content=content,
+        name=name,
+        fmt=fmt,
+        scope=scope,
+        expiry=expiry,
+        folder=folder,
+    )
+    print(resp)
+    print(resp.text)
+    resp.raise_for_status()
