@@ -81,7 +81,7 @@ def get(ctx: click.Context, key: str):
     type=click.Choice(["N", "10M", "1H", "1D", "1W", "2W", "1M", "6M", "1Y"]),
     help="N=Never, 10M=10 minutes, 1H=1 hour, 1D=1 day, 1W=1 week, 2W=2 weeks, 1Y=Year",
 )
-@click.option("-F", "--folder", help="Folder key")
+@click.option("-f", "--folder", help="Folder key")
 @click.pass_context
 def put(ctx: click.Context, filename, name, syntax, privacy, expiry, folder):
     """Create a new paste"""
