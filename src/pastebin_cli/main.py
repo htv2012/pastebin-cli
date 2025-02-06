@@ -103,4 +103,3 @@ def put(ctx: click.Context, filename, name, syntax, privacy, expiry, folder):
         click.echo(resp.text, err=True)
         ctx.exit(1)
     click.echo(resp.text)
-
