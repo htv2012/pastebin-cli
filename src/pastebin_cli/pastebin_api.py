@@ -1,4 +1,3 @@
-import pprint
 import xml.etree.ElementTree as ET
 
 import requests
@@ -74,18 +73,11 @@ class PastebinAPI:
         content: str,
         name: str = None,
         fmt: str = None,
-        scope: int = 0,
+        privacy: int = 0,
         expiry: str = None,
         folder: str = None,
     ):
-        """
-        api_paste_code
-        api_paste_name
-        api_paste_format
-        api_paste_private public = 0, unlisted = 1, private = 2
-        api_paste_expire_date
-        api_folder_key
-        """
+        """Create a new paste"""
         raw = {
             "api_dev_key": self.api_dev_key,
             "api_user_key": self.api_user_key,
@@ -93,11 +85,10 @@ class PastebinAPI:
             "api_paste_code": content,
             "api_paste_name": name,
             "api_paste_format": fmt,
-            "api_paste_private": scope,
+            "api_paste_private": privacy,
             "api_paste_expire_date": expiry,
             "api_folder_key": folder,
         }
         payload = {k: v for k, v in raw.items() if v is not None}
-        pprint.pprint(payload)
         resp = self.session.post(self.url, data=payload)
         return resp

@@ -63,23 +63,47 @@ def get(ctx: click.Context, key: str):
 
 
 @main.command()
-@click.option("-c", "--content", required=True, prompt=True)
-@click.option("-n", "--name")
-@click.option("-f", "--fmt")
-@click.option("-s", "--scope")
-@click.option("-e", "--expiry", type=str.upper)
-@click.option("-F", "--folder")
+@click.argument("filename", required=False)
+@click.option("-n", "--name", help="The name (title)")
+@click.option("-f", "--fmt", type=str.lower, help="The format (syntax, e.g. python)")
+@click.option(
+    "-p", "--privacy", type=click.IntRange(0, 2), help="0=public, 1=unlisted, 2=private"
+)
+@click.option(
+    "-e",
+    "--expiry",
+    type=click.Choice(["N", "10M", "1H", "1D", "1W", "2W", "1M", "6M", "1Y"]),
+    help="N=Never, 10M=10 minutes, 1H=1 hour, 1D=1 day, 1W=1 week, 2W=2 weeks, 1Y=Year",
+)
+@click.option("-F", "--folder", help="Folder key")
 @click.pass_context
-def put(ctx: click.Context, content, name, fmt, scope, expiry, folder):
+def put(ctx: click.Context, filename, name, fmt, privacy, expiry, folder):
     """Create a new paste"""
+    content = get_content(filename)
+    if content is None:
+        click.echo("Paste will not be created as there is no content.", err=True)
+        ctx.exit(1)
+
     resp = ctx.obj.api.put(
         content=content,
         name=name,
         fmt=fmt,
-        scope=scope,
+        privacy=privacy,
         expiry=expiry,
         folder=folder,
     )
-    print(resp)
-    print(resp.text)
-    resp.raise_for_status()
+
+    if not resp.ok:
+        click.echo(resp.text, err=True)
+        ctx.exit(1)
+    click.echo(resp.text)
+
+
+def get_content(filename: str):
+    if filename is None:
+        content = click.edit("(Edit the content of the paste here)")
+    else:
+        with click.open_file(filename) as stream:
+            content = stream.read()
+
+    return content
