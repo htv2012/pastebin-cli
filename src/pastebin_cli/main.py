@@ -2,7 +2,7 @@ import types
 
 import click
 
-from . import config
+from . import config, filelib
 from .display import display_json, display_paste, display_text
 from .pastebin_api import PastebinAPI, parse_paste_list
 
@@ -65,9 +65,15 @@ def get(ctx: click.Context, key: str):
 @main.command()
 @click.argument("filename", required=False)
 @click.option("-n", "--name", help="The name (title)")
-@click.option("-f", "--fmt", type=str.lower, help="The format (syntax, e.g. python)")
 @click.option(
-    "-p", "--privacy", type=click.IntRange(0, 2), help="0=public, 1=unlisted, 2=private"
+    "-x", "--syntax", type=str.lower, help="The syntax, e.g. python, bash, make..."
+)
+@click.option(
+    "-p",
+    "--privacy",
+    type=click.IntRange(0, 2),
+    help="0=public, 1=unlisted, 2=private",
+    default=2,
 )
 @click.option(
     "-e",
@@ -77,9 +83,9 @@ def get(ctx: click.Context, key: str):
 )
 @click.option("-F", "--folder", help="Folder key")
 @click.pass_context
-def put(ctx: click.Context, filename, name, fmt, privacy, expiry, folder):
+def put(ctx: click.Context, filename, name, syntax, privacy, expiry, folder):
     """Create a new paste"""
-    content = get_content(filename)
+    content = filelib.get_content(filename)
     if content is None:
         click.echo("Paste will not be created as there is no content.", err=True)
         ctx.exit(1)
@@ -87,7 +93,7 @@ def put(ctx: click.Context, filename, name, fmt, privacy, expiry, folder):
     resp = ctx.obj.api.put(
         content=content,
         name=name,
-        fmt=fmt,
+        syntax=syntax,
         privacy=privacy,
         expiry=expiry,
         folder=folder,
@@ -98,12 +104,3 @@ def put(ctx: click.Context, filename, name, fmt, privacy, expiry, folder):
         ctx.exit(1)
     click.echo(resp.text)
 
-
-def get_content(filename: str):
-    if filename is None:
-        content = click.edit("(Edit the content of the paste here)")
-    else:
-        with click.open_file(filename) as stream:
-            content = stream.read()
-
-    return content
