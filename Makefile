@@ -1,7 +1,7 @@
 .PHONY: all test run lint clean
 
 ### Default target(s)
-all: run
+all: test
 
 ### Perform static analysis
 lint:

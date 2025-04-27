@@ -1,5 +1,4 @@
 import pathlib
-
 import tomllib
 
 EMPTY_CONFIG = """
@@ -23,7 +22,8 @@ def load():
     with open(config_filename, "rb") as stream:
         config = tomllib.load(stream)
 
-    if config["api_dev_key"] == "" or config["api_user_key"] == "":
+    # if config["api_dev_key"] == "" or config["api_user_key"] == "":
+    if "api_dev_key" not in config or "api_user_key" not in config:
         raise ConfigError(f"One or more keys are empty. Please edit {config_filename}")
 
     return config
