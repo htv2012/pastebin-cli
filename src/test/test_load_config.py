@@ -6,16 +6,25 @@ from pastebin_cli.config import ConfigError, load
 
 CONFIG_PATH = pathlib.Path("~/.config/pastebin.toml").expanduser()
 BAK = CONFIG_PATH.with_suffix(".bak")
+CONFIG_EXISTS = CONFIG_PATH.exists()
 
 
+# ======================================================================
+# Setup/teardown
+# ======================================================================
 def setup_module():
-    BAK.write_text(CONFIG_PATH.read_text())
+    if CONFIG_EXISTS:
+        BAK.write_text(CONFIG_PATH.read_text())
 
 
 def teardown_module():
-    CONFIG_PATH.write_text(BAK.read_text())
+    if CONFIG_EXISTS:
+        CONFIG_PATH.write_text(BAK.read_text())
 
 
+# ======================================================================
+# Tests
+# ======================================================================
 def test_non_existent():
     CONFIG_PATH.unlink(missing_ok=True)
 
