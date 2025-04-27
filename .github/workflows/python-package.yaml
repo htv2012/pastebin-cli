@@ -43,4 +43,4 @@ jobs:
         
     - name: Run Tests
       run: |
-        uv run pytest -v
+        uv run pytest --cov=src/pastebin_cli -v

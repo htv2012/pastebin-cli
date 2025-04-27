@@ -27,31 +27,22 @@ def teardown_module():
 # ======================================================================
 def test_non_existent():
     CONFIG_PATH.unlink(missing_ok=True)
-
     with pytest.raises(ConfigError, match="Please add key"):
         load()
 
 
 @pytest.mark.parametrize(
-    ["config", "raise_context"],
+    ["config"],
     [
-        pytest.param("", pytest.raises(ConfigError), id="no_keys"),
-        pytest.param(
-            'api_dev_key = "foo"', pytest.raises(ConfigError), id="missing_api_user_key"
-        ),
-        pytest.param(
-            'api_user_key = "bar"', pytest.raises(ConfigError), id="missing_api_dev_key"
-        ),
-        pytest.param(
-            'api_user_key = ""\ndev_user_key = ""',
-            pytest.raises(ConfigError),
-            id="empty_keys",
-        ),
+        pytest.param("", id="missing_both"),
+        pytest.param('api_dev_key = "foo"', id="missing_api_user_key"),
+        pytest.param('api_user_key = "bar"', id="missing_api_dev_key"),
+        pytest.param('api_user_key = ""\ndev_user_key = ""', id="empty_keys"),
     ],
 )
-def test_missing_keys(config, raise_context):
+def test_missing_keys(config):
     CONFIG_PATH.write_text(config)
-    with raise_context:
+    with pytest.raises(ConfigError):
         load()
 
 
